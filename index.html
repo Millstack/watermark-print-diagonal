@@ -12,6 +12,34 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
     <script type="text/javascript" src="JavaScript.js"></script>
 
+    <style>
+        @media print {
+            body {
+                position: relative;
+            }
+
+            body::after {
+                content: 'MillStack Watermark';
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%) rotate(-45deg);
+                font-size: 50px;
+                text-align: center;
+                color: rgba(12, 11, 11, 0.1);
+                z-index: 9999;
+
+                /* for image as watermark */
+                /* content: ''; */
+                /* background: url('your-image-url.jpg') center center no-repeat; */
+                /* width: 200px; */
+                /* height: 200px; */
+                /* background-size: contain; */
+            }
+        }
+    </style>
+
+
 </head>
 <body>
     <div class="card-body col-md-6 p-2 m-auto mt-5 m">
@@ -56,43 +84,6 @@
     </div>
 
     <script>
-        // Dynamically create styles for watermark
-        var style = document.createElement('style');
-        style.type = 'text/css';
-        style.innerHTML = `
-            @media print {
-                body {
-                    size: A4;
-                    margin: 0;
-                }
-                .border {
-                    page: border;
-                    box-shadow: none;
-                    break-inside: avoid;
-                }
-                .watermark-container {
-                    position: fixed;
-                    top: 0;
-                    left: 0;
-                    width: 100vw;
-                    height: 100vh;
-                    pointer-events: none;
-                    z-index: -9;
-                }
-                .watermark {
-                    content: 'MillStack Watermark';
-                    position: absolute;
-                    top: 50%;
-                    left: 50%;
-                    transform: translate(-50%, -50%) rotate(-45deg);
-                    font-size: 50px;
-                    text-align: center;
-                    color: rgba(0, 0, 0, 0.02);
-                }
-            }
-        `;
-        document.head.appendChild(style);
-
         // printDiv function on onClick event
         function printDiv(divId) {
             var printContents = document.getElementById(divId).outerHTML;
@@ -100,24 +91,6 @@
 
             // Replace the current content with the content of the specified div
             document.body.innerHTML = printContents;
-
-            // Create a watermark container
-            var watermarkContainer = document.createElement('div');
-            watermarkContainer.className = 'watermark-container';
-
-            // Create the watermark element
-            var watermark = document.createElement('div');
-            watermark.className = 'watermark';
-            watermark.innerText = 'MillStack Watermark';
-
-            // Append the watermark to the container
-            watermarkContainer.appendChild(watermark);
-
-            // Append the container to each printed page
-            var pages = document.querySelectorAll('.border'); // Assuming each .border is a page
-            pages.forEach(function(page) {
-                page.appendChild(watermarkContainer.cloneNode(true));
-            });
 
             // Trigger the print function
             window.print();
